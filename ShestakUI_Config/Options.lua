@@ -1042,10 +1042,10 @@ do
 
 	-- Cast bars
 	local subheader = ns.addSubCategory(parent, L_GUI_UF_SUBHEADER_CAST)
-	subheader:SetPoint("TOPLEFT", lines, "BOTTOMLEFT", 0, -16)
+	subheader:SetPoint("TOPLEFT", lines, "BOTTOMLEFT", 0, 0)
 
 	local unit_castbar = ns.CreateCheckBox(parent, "unit_castbar", L_GUI_UF_UNIT_CASTBAR)
-	unit_castbar:SetPoint("TOPLEFT", subheader, "BOTTOMLEFT", 0, -8)
+	unit_castbar:SetPoint("TOPLEFT", subheader, "BOTTOMLEFT", 0, 0)
 
 	local castbar_icon = ns.CreateCheckBox(parent, "castbar_icon", L_GUI_UF_CASTBAR_ICON)
 	castbar_icon:SetPoint("TOPLEFT", unit_castbar, "BOTTOMLEFT", 0, 0)
