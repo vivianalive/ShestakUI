@@ -328,8 +328,8 @@ C["tooltip"] = {
 ----------------------------------------------------------------------------------------
 C["chat"] = {
 	["enable"] = true,							-- Enable chat
-	["width"] = 350,							-- Chat width
-	["height"] = 112,							-- Chat height
+	["width"] = 500,							-- Chat width xxxx
+	["height"] = 136,							-- Chat height xxxx
 	["background"] = false,						-- Enable background for chat
 	["background_alpha"] = 0.7,					-- Background alpha
 	["filter"] = true,							-- Removing some systems spam ("Player1" won duel "Player2")
