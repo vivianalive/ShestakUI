@@ -7,7 +7,7 @@ if C.combattext.enable ~= true then return end
 -- Justify messages in frames
 local ct = {
 	["justify_1"] = "LEFT",			-- Incoming damage justify
-	["justify_2"] = "RIGHT",		-- Incoming healing justify
+	["justify_2"] = "LEFT",		    -- Incoming healing justify
 	["justify_3"] = "CENTER",		-- Various messages justify
 	["justify_4"] = "RIGHT",		-- Outgoing damage/healing justify
 }
