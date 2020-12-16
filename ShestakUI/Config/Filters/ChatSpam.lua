@@ -1,7 +1,14 @@
-﻿local T, C, L, _ = unpack(select(2, ...))
+local T, C, L, _ = unpack(select(2, ...))
 if C.chat.enable ~= true or C.chat.spam ~= true then return end
 
 T.ChatSpamList = {
+	"wts",
+	"wtb",
+	"sale",
+	"selling",
+	"[wts]",
+	"[wtb]",
+    "[sale]",
 	"золото",
 	"з0л0т0",
 	"з0л0то",
