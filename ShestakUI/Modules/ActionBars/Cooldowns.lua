@@ -36,7 +36,7 @@ local function Timer_OnSizeChanged(self, width)
 	end
 
 	self.fontScale = fontScale
-	if fontScale < 0.5 then
+	if fontScale < 0.4 then
 		self:Hide()
 	else
 		self.text:SetFont(C.font.cooldown_timers_font, C.font.cooldown_timers_font_size, C.font.cooldown_timers_font_style)
@@ -128,7 +128,7 @@ hooksecurefunc(Cooldown_MT, "SetCooldown", function(cooldown, start, duration, m
 		timer.duration = duration
 		timer.enabled = true
 		timer.nextUpdate = 0
-		if timer.fontScale >= 0.5 then timer:Show() end
+		if timer.fontScale >= 0.4 then timer:Show() end
 	else
 		deactivateDisplay(cooldown)
 	end
