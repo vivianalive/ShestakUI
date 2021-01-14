@@ -49,7 +49,7 @@ local function Shared(self, unit)
 
 	-- Health bar
 	self.Health = CreateFrame("StatusBar", self:GetName().."_Health", self)
-	if unit == "player" or unit == "target" or unit == "arena" or unit == "boss" then
+	if unit == "player" or unit == "target" or unit == "targettarget" or unit == "arena" or unit == "boss" then
 		self.Health:SetHeight(21 + C.unitframe.extra_health_height)
 	elseif unit == "arenatarget" then
 		self.Health:SetHeight(27 + T.extraHeight)
@@ -117,7 +117,7 @@ local function Shared(self, unit)
 
 	-- Power bar
 	self.Power = CreateFrame("StatusBar", self:GetName().."_Power", self)
-	if unit == "player" or unit == "target" or unit == "arena" or unit == "boss" then
+	if unit == "player" or unit == "target" or unit == "targettarget" or unit == "arena" or unit == "boss" then
 		self.Power:SetHeight(5 + C.unitframe.extra_power_height)
 	elseif unit == "arenatarget" then
 		self.Power:SetHeight(0)
@@ -172,7 +172,7 @@ local function Shared(self, unit)
 			self.Power.value:SetPoint("RIGHT", self.Power, "RIGHT", 0, 0)
 			self.Power.value:SetJustifyH("RIGHT")
 		end
-	elseif unit == "pet" or unit == "focus" or unit == "focustarget" or unit == "targettarget" then
+	elseif unit == "pet" or unit == "focus" or unit == "focustarget" then
 		self.Power.value:Hide()
 	else
 		self.Power.value:SetPoint("LEFT", self.Power, "LEFT", 2, 0)
@@ -186,7 +186,7 @@ local function Shared(self, unit)
 		if unit ~= "arenatarget" then
 			self.Level = T.SetFontString(self.Power, C.font.unit_frames_font, C.font.unit_frames_font_size, C.font.unit_frames_font_style)
 		end
-		if unit == "target" then
+		if unit == "target" or unit == "targettarget" then
 			self.Info:SetPoint("RIGHT", self.Health, "RIGHT", 0, 0)
 			self.Info:SetPoint("LEFT", self.Health.value, "RIGHT", 0, 0)
 			self.Info:SetJustifyH("RIGHT")
@@ -513,9 +513,9 @@ local function Shared(self, unit)
 			if C.unitframe.portrait_enable == true then
 				self.Experience:SetPoint("TOPLEFT", self, "TOPLEFT", -25 - C.unitframe.portrait_width, 28)
 			else
-				self.Experience:SetPoint("TOPLEFT", self, "TOPLEFT", -18, 28)
+				self.Experience:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -25, 0)
 			end
-			self.Experience:SetSize(7, 94 + T.extraHeight + (C.unitframe.extra_health_height / 2))
+			self.Experience:SetSize(7, 128)
 			self.Experience:SetOrientation("Vertical")
 			self.Experience:SetStatusBarTexture(C.media.texture)
 
@@ -545,12 +545,12 @@ local function Shared(self, unit)
 				end
 			else
 				if self.Experience and self.Experience:IsShown() then
-					self.Reputation:SetPoint("TOPLEFT", self, "TOPLEFT", -32, 28)
+					self.Reputation:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -39, 0)
 				else
-					self.Reputation:SetPoint("TOPLEFT", self, "TOPLEFT", -18, 28)
+					self.Reputation:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -25, 0)
 				end
 			end
-			self.Reputation:SetSize(7, 94 + T.extraHeight + (C.unitframe.extra_health_height / 2))
+			self.Reputation:SetSize(7, 128)
 			self.Reputation:SetOrientation("Vertical")
 			self.Reputation:SetStatusBarTexture(C.media.texture)
 
@@ -613,7 +613,7 @@ local function Shared(self, unit)
 		self.Debuffs = CreateFrame("Frame", self:GetName().."_Debuffs", self)
 		self.Debuffs:SetHeight(25)
 		self.Debuffs:SetWidth(pet_width + 4)
-		self.Debuffs.size = T.Scale(C.aura.player_debuff_size)
+		self.Debuffs.size = T.Scale(C.aura.player_buff_size)
 		self.Debuffs.spacing = T.Scale(3)
 		self.Debuffs.num = 4
 		self.Debuffs["growth-y"] = "DOWN"
@@ -702,16 +702,16 @@ local function Shared(self, unit)
 			self.Debuffs:SetWidth(player_width + 4)
 			self.Debuffs.size = T.Scale(C.aura.player_debuff_size)
 			self.Debuffs.spacing = T.Scale(3)
-			self.Debuffs.initialAnchor = "BOTTOMRIGHT"
-			self.Debuffs["growth-y"] = "UP"
+			self.Debuffs.initialAnchor = "TOPRIGHT"
+			self.Debuffs["growth-y"] = "DOWN"
 			self.Debuffs["growth-x"] = "LEFT"
 			if (T.class == "DEATHKNIGHT" and C.unitframe_class_bar.rune == true)
 			or ((T.class == "DRUID" or T.class == "ROGUE") and C.unitframe_class_bar.combo == true and C.unitframe_class_bar.combo_old ~= true)
 			or (T.class == "SHAMAN" and C.unitframe_class_bar.totem == true)
 			or (T.class == "WARLOCK" and C.unitframe_class_bar.shard == true) then
-				self.Debuffs:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 2, 19)
+				self.Debuffs:SetPoint("TOPRIGHT", self, "TOPLEFT", -5, 14)
 			else
-				self.Debuffs:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 2, 5)
+				self.Debuffs:SetPoint("TOPRIGHT", self, "TOPLEFT", -5, 0)
 			end
 
 			self.Debuffs.PostCreateIcon = T.PostCreateIcon
@@ -720,16 +720,16 @@ local function Shared(self, unit)
 
 		if unit == "target" then
 			self.Auras = CreateFrame("Frame", self:GetName().."_Auras", self)
-			self.Auras:SetPoint("BOTTOMLEFT", self, "TOPLEFT", -2, 5)
-			self.Auras.initialAnchor = "BOTTOMLEFT"
-			self.Auras["growth-x"] = "RIGHT"
-			self.Auras["growth-y"] = "UP"
-			self.Auras.numDebuffs = 16
-			self.Auras.numBuffs = 32
+			self.Auras:SetPoint("TOPLEFT", self, "TOPRIGHT", 5, -23)
 			self.Auras:SetHeight(165)
 			self.Auras:SetWidth(player_width + 4)
+			self.Auras.size = T.Scale(C.aura.player_buff_size)
 			self.Auras.spacing = T.Scale(3)
-			self.Auras.size = T.Scale(C.aura.player_debuff_size)
+			self.Auras.initialAnchor = "BOTTOMLEFT"
+			self.Auras["growth-x"] = "RIGHT"
+			self.Auras["growth-y"] = "DOWN"
+			self.Auras.numDebuffs = 16
+			self.Auras.numBuffs = 32
 			self.Auras.gap = true
 			self.Auras.PostCreateIcon = T.PostCreateIcon
 			self.Auras.PostUpdateIcon = T.PostUpdateIcon
@@ -808,13 +808,13 @@ local function Shared(self, unit)
 
 		if unit == "player" then
 			if C.unitframe.castbar_icon == true then
-				self.Castbar:SetPoint(C.position.unitframes.player_castbar[1], C.position.unitframes.player_castbar[2], C.position.unitframes.player_castbar[3], C.position.unitframes.player_castbar[4] + ((C.unitframe.castbar_height + 7) / 2) , C.position.unitframes.player_castbar[5])
-				self.Castbar:SetWidth(C.unitframe.castbar_width)
+				self.Castbar:SetPoint(C.position.unitframes.player_castbar[1], C.position.unitframes.player_castbar[2], C.position.unitframes.player_castbar[3], C.position.unitframes.player_castbar[4] + 11, C.position.unitframes.player_castbar[5])
+				self.Castbar:SetWidth(270)
 			else
 				self.Castbar:SetPoint(unpack(C.position.unitframes.player_castbar))
-				self.Castbar:SetWidth(C.unitframe.castbar_width + C.unitframe.castbar_height + 7)
+				self.Castbar:SetWidth(293)
 			end
-			self.Castbar:SetHeight(C.unitframe.castbar_height)
+			self.Castbar:SetHeight(12)
 		elseif unit == "target" then
 			if C.unitframe.castbar_icon == true then
 				if C.unitframe.plugins_swing == true then
@@ -822,20 +822,26 @@ local function Shared(self, unit)
 				else
 					self.Castbar:SetPoint(C.position.unitframes.target_castbar[1], C.position.unitframes.target_castbar[2], C.position.unitframes.target_castbar[3], C.position.unitframes.target_castbar[4] - C.unitframe.castbar_height - 7, C.position.unitframes.target_castbar[5])
 				end
-				self.Castbar:SetWidth(C.unitframe.castbar_width)
+				self.Castbar:SetWidth(270)
 			else
 				if C.unitframe.plugins_swing == true then
 					self.Castbar:SetPoint(C.position.unitframes.target_castbar[1], C.position.unitframes.target_castbar[2], C.position.unitframes.target_castbar[3], C.position.unitframes.target_castbar[4], C.position.unitframes.target_castbar[5] + 12)
 				else
 					self.Castbar:SetPoint(unpack(C.position.unitframes.target_castbar))
 				end
-				self.Castbar:SetWidth(C.unitframe.castbar_width + C.unitframe.castbar_height + 7)
+				self.Castbar:SetWidth(293)
 			end
-			self.Castbar:SetHeight(C.unitframe.castbar_height)
+			self.Castbar:SetHeight(12)
+		elseif unit == "targettarget" or unit == "focustarget" then
+			self.Castbar:Hide()
+			-- self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -7)
+			-- self.Castbar:SetWidth(293)
+			-- self.Castbar:SetHeight(5)
 		elseif unit == "arena" or unit == "boss" then
 			self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -7)
 			self.Castbar:SetWidth(boss_width)
-			self.Castbar:SetHeight(16)
+			self.Castbar:SetWidth(150)
+			self.Castbar:SetHeight(12)
 		else
 			self.Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -7)
 			self.Castbar:SetWidth(pet_width)
@@ -1176,7 +1182,7 @@ end
 if C.unitframe.show_target_target == true then
 	local targettarget = oUF:Spawn("targettarget", "oUF_TargetTarget")
 	targettarget:SetPoint(unpack(C.position.unitframes.target_target))
-	targettarget:SetSize(pet_width, 16 + (C.unitframe.extra_health_height / 2))
+	targettarget:SetSize(player_width, 27 + T.extraHeight)
 end
 
 if C.unitframe.show_boss == true then
