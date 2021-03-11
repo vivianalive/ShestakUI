@@ -110,48 +110,48 @@ bar:SetScript("OnEvent", function(self, event)
 end)
 
 if C.actionbar.bottombars_mouseover then
-	for i = 1, 12 do
-		local b = _G["ActionButton"..i]
-		b:SetAlpha(0)
-		b:HookScript("OnEnter", function() BottomBarMouseOver(1) end)
-		b:HookScript("OnLeave", function() if not HoverBind.enabled then BottomBarMouseOver(0) end end)
-	end
+    for i = 1, 12 do
+        local b = _G["ActionButton"..i]
+        b:SetAlpha(0)
+        b:HookScript("OnEnter", function() BottomBarMouseOver(1) end)
+        b:HookScript("OnLeave", function() if not HoverBind.enabled then BottomBarMouseOver(0) end end)
+    end
 end
 
 if C.actionbar.editor and C.actionbar.bar1_mouseover then
-	for i = 1, 12 do
-		local b = _G["ActionButton"..i]
-		b:SetAlpha(0)
-		b:HookScript("OnEnter", function() Bar1MouseOver(1) end)
-		b:HookScript("OnLeave", function() if not HoverBind.enabled then Bar1MouseOver(0) end end)
-	end
+    for i = 1, 12 do
+        local b = _G["ActionButton"..i]
+        b:SetAlpha(0)
+        b:HookScript("OnEnter", function() Bar1MouseOver(1) end)
+        b:HookScript("OnLeave", function() if not HoverBind.enabled then Bar1MouseOver(0) end end)
+    end
 
-	bar:SetScript("OnEnter", function() Bar1MouseOver(1) end)
-	bar:SetScript("OnLeave", function() if not HoverBind.enabled then Bar1MouseOver(0) end end)
+    bar:SetScript("OnEnter", function() Bar1MouseOver(1) end)
+    bar:SetScript("OnLeave", function() if not HoverBind.enabled then Bar1MouseOver(0) end end)
 end
 
 ----------------------------------------------------------------------------------------
---	Hide bottom bar1 in rest & no target
+--  Hide bottom bar1 in rest & no target
 ----------------------------------------------------------------------------------------
 
 for i = 1, 12 do
-	local b = _G["ActionButton"..i]
-	b:SetAlpha(0)
-	b:RegisterEvent("PLAYER_REGEN_ENABLED")
-	b:RegisterEvent("PLAYER_REGEN_DISABLED")
-	b:RegisterEvent("PLAYER_TARGET_CHANGED")
+    local b = _G["ActionButton"..i]
+    b:SetAlpha(0)
+    b:RegisterEvent("PLAYER_REGEN_ENABLED")
+    b:RegisterEvent("PLAYER_REGEN_DISABLED")
+    b:RegisterEvent("PLAYER_TARGET_CHANGED")
 
-	b:HookScript("OnEvent", function(self, event)
-		if event == "PLAYER_REGEN_DISABLED" then
-			BottomBarMouseOver(1)
-		elseif event == "PLAYER_REGEN_ENABLED" or event == "PLAYER_TARGET_CHANGED" then
-			if not (InCombatLockdown() or UnitExists("target")) then BottomBarMouseOver(0)
-			else BottomBarMouseOver(1) end
-	end
-	end)
+    b:HookScript("OnEvent", function(self, event)
+        if event == "PLAYER_REGEN_DISABLED" then
+            BottomBarMouseOver(1)
+        elseif event == "PLAYER_REGEN_ENABLED" or event == "PLAYER_TARGET_CHANGED" then
+            if not (InCombatLockdown() or UnitExists("target")) then BottomBarMouseOver(0)
+            else BottomBarMouseOver(1) end
+    end
+    end)
 
-	b:HookScript("OnEnter", function() BottomBarMouseOver(1) end)
-	b:HookScript("OnLeave", function()
-		if not (InCombatLockdown() or UnitExists("target")) then BottomBarMouseOver(0) end
-	end)
+    b:HookScript("OnEnter", function() BottomBarMouseOver(1) end)
+    b:HookScript("OnLeave", function()
+        if not (InCombatLockdown() or UnitExists("target")) then BottomBarMouseOver(0) end
+    end)
 end
